@@ -1,0 +1,53 @@
+import random
+
+def generate(N):
+    grid = [
+        [random.choice((True, False)) for _ in range(N)]
+        for _ in range(N)
+    ]
+
+    row_vals = [i+1 for i in range(N)]
+    col_vals = [i+1 for i in range(N)]
+
+    row_ans = []
+    for r in range(N):
+        acc = 0
+
+        for c in range(N):
+            if grid[r][c]:
+                acc += col_vals[c]
+        
+        row_ans.append(acc)
+
+    col_ans = []
+    for c in range(N):
+        acc = 0
+
+        for r in range(N):
+            if grid[r][c]:
+                acc += row_vals[r]
+        
+        col_ans.append(acc)
+
+    with open('input.txt', 'w') as file:
+        file.write(f"{N}\n")
+        file.write(f"{','.join(map(str,row_vals))}\n")
+        file.write(f"{','.join(map(str,col_vals))}\n")
+        file.write(f"{','.join(map(str,row_ans))}\n")
+        file.write(f"{','.join(map(str,col_ans))}\n")
+
+        for r in grid:
+            file.write(f"{','.join(map(lambda x: '1' if x else '-1',r))}\n")
+
+    with open('human_aux.txt', 'w') as file:
+        file.write(f"{N}\n")
+        file.write(f"{','.join(map(str,row_vals))}\n")
+        file.write(f"{','.join(map(str,col_vals))}\n")
+        file.write(f"{','.join(map(str,row_ans))}\n")
+        file.write(f"{','.join(map(str,col_ans))}\n")
+
+        for _ in range(N):
+            file.write(f"{','.join(map(str,(0 for _ in range(N))))}\n")
+
+if __name__ == "__main__":
+    generate(6)
