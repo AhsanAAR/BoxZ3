@@ -52,7 +52,7 @@ if solver.check() == z.sat:
 
     print(answer)
 
-    with open('z3_out.text', 'w') as file:
+    with open('z3_out.txt', 'w') as file:
         for r in answer:
             file.write(f'{",".join(map(lambda x: "1" if x else "0", r))}\n')
 
