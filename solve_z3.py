@@ -1,5 +1,5 @@
 import z3 as z
-
+# core and satisfying subsetes z3 microsoft.xs
 
 with open('input.txt', 'r') as file:
     N = int(file.readline())
