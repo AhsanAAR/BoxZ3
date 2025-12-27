@@ -1,4 +1,5 @@
 import random
+import argparse
 
 def generate(N):
     grid = [
@@ -50,4 +51,8 @@ def generate(N):
             file.write(f"{','.join(map(str,(0 for _ in range(N))))}\n")
 
 if __name__ == "__main__":
-    generate(6)
+    parser = argparse.ArgumentParser(description="Generates a random Box puzzle")
+    parser.add_argument("N", type=int, help="Size for NxN Box grid")
+    args = parser.parse_args()
+
+    generate(args.N)
