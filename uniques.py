@@ -1,6 +1,7 @@
 from generate import generate
 from solve_z3 import solve_z3
 from solver_human import solver
+from utils import save_input
 
 import argparse
 from collections import defaultdict
@@ -13,11 +14,24 @@ if __name__ == "__main__":
 
     counter = defaultdict(int)
     counter2 = defaultdict(int)
-
+    solutions = set()
+    N = args.N
+    
     for i in range(1000):
-        generate(args.N)
-        counter[solve_z3()] += 1
-        counter2[solver()] += 1
+        new_sol = generate(N, solutions)
+        print(new_sol)
+
+        solutions.add(new_sol)
+
+        z3_solutions = solve_z3()
+        human_solver_result = solver()
+
+        counter[z3_solutions] += 1
+        counter2[human_solver_result] += 1
+
+        if z3_solutions == 1 and human_solver_result != 1:
+            save_input(N)
+            
         print(i)
 
     print(counter)

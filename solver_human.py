@@ -16,22 +16,19 @@ def can_sum(arr: list[int], remove:int, target: int):
 
     return s.check() == z.sat
 
-def solver(msgs=False):
+def solver_helper(msgs):
+    with open('input.txt', 'r') as file:
+        N = int(file.readline())
+
+        row_vals = list(map(int, file.readline().split(',')))
+        col_vals = list(map(int, file.readline().split(',')))
+
+        row_ans = list(map(int, file.readline().split(',')))
+        col_ans = list(map(int, file.readline().split(',')))
+
+        current_grid = [[0 for _ in range(N)] for _ in range(N)]
+
     while True:
-
-        with open('human_aux.txt', 'r') as file:
-            N = int(file.readline())
-
-            row_vals = list(map(int, file.readline().split(',')))
-            col_vals = list(map(int, file.readline().split(',')))
-
-            row_ans = list(map(int, file.readline().split(',')))
-            col_ans = list(map(int, file.readline().split(',')))
-
-            current_grid = []
-            for r in range(N):
-                current_grid.append(list(map(int, file.readline().split(','))))
-
         row_decided_sum = []
         row_undecided_sum = []
         row_smallest_undecided = []
@@ -139,45 +136,47 @@ def solver(msgs=False):
             if answer == current_grid:
                 if msgs:
                     print("reached equilibrium")
-                return 0
+                return 0, answer
 
-            with open('human_aux.txt', 'w') as file:
-                file.write(f"{N}\n")
-                file.write(f"{','.join(map(str,row_vals))}\n")
-                file.write(f"{','.join(map(str,col_vals))}\n")
-                file.write(f"{','.join(map(str,row_ans))}\n")
-                file.write(f"{','.join(map(str,col_ans))}\n")
+            if 0 not in [answer[r][c] for c in range(N) for r in range(N)]:
+                if msgs:
+                    print("Reached an answer!")
 
-                for r in answer:
-                    file.write(f"{','.join(map(str,r))}\n")
+                with open('input.txt', 'r') as ansfile:
+                    ansfile.readline()
+                    ansfile.readline()
+                    ansfile.readline()
+                    ansfile.readline()
+                    ansfile.readline()
 
-                if 0 not in [answer[r][c] for c in range(N) for r in range(N)]:
+                    ground_truth = []
+                    for r in range(N):
+                        ground_truth.append(list(map(int, ansfile.readline().split(',')))) 
+
+                if ground_truth == answer:
                     if msgs:
-                        print("Reached an answer!")
-
-                    with open('input.txt', 'r') as ansfile:
-                        ansfile.readline()
-                        ansfile.readline()
-                        ansfile.readline()
-                        ansfile.readline()
-                        ansfile.readline()
-
-                        ground_truth = []
-                        for r in range(N):
-                            ground_truth.append(list(map(int, ansfile.readline().split(',')))) 
-
-                    if ground_truth == answer:
-                        if msgs:
-                            print('Correct Answer!')
-                        return 1
-                    else:
-                        if msgs:
-                            print('Incorrect Answer!')
-                        return -1
+                        print('Correct Answer!')
+                    return 1, answer
+                else:
+                    if msgs:
+                        print('Incorrect Answer!')
+                    return -1, answer
         else:
             if msgs:
                 print("halt!")
-            return -2 
+            return -2, answer
+        
+        current_grid = answer
+
+def solver(msgs=False, write_ans=False):
+    ans, grid = solver_helper(msgs)
+
+    if write_ans:
+        with open('human_output.txt', 'w') as file:
+            for r in grid:
+                file.write(f"{','.join(map(str,r))}\n")
+    
+    return ans
 
 if __name__ == "__main__":
-    solver(True)
+    solver(True, True)

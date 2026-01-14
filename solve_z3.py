@@ -19,7 +19,7 @@ def all_smt(s, initial_terms):
                s.pop()   
     yield from all_smt_rec(list(initial_terms))
 
-def solve_z3():
+def solve_z3(write_ans=False, list_all=False):
     with open('input.txt', 'r') as file:
         N = int(file.readline())
 
@@ -63,23 +63,30 @@ def solve_z3():
 
     i = 0
     if solver.check() == z.sat:
-        open("z3_out.txt", "w").close()
+        if write_ans:
+            open("z3_out.txt", "w").close()
 
+        
         for model in all_smt(solver, [grid[r][c] for c in range(N) for r in range(N)]):
             i+=1
-            answer = [
-                [model[grid[r][c]] for c in range(N)]
-                for r in range(N)
-            ]
 
-            with open('z3_out.txt', 'a') as file:
-                for r in answer:
-                    file.write(f'{",".join(map(lambda x: "1" if x else "0", r))}\n')
+            if write_ans:
+                answer = [
+                    [model[grid[r][c]] for c in range(N)]
+                    for r in range(N)
+                ]
 
+                with open('z3_out.txt', 'a') as file:
+                    for r in answer:
+                        file.write(f'{",".join(map(lambda x: "1" if x else "0", r))}\n')
+            
+            if i == 2 and not list_all:
+                return 2
+            
     else:
         print("Not possible")
     
     return i
 
 if __name__ == "__main__":
-    solve_z3()
+    solve_z3(True, True)

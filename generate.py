@@ -1,11 +1,20 @@
 import random
 import argparse
 
-def generate(N):
+def generate(N, exclusion=None):
     grid = [
-        [random.choice((True, False)) for _ in range(N)]
+        [random.choice((1, 0)) for _ in range(N)]
         for _ in range(N)
     ]
+    binary_repr = "".join(str(val) for row in grid for val in row)
+
+    if exclusion is not None:
+        while binary_repr in exclusion:
+            grid = [
+                [random.choice((1, 0)) for _ in range(N)]
+                for _ in range(N)
+            ]
+            binary_repr = "".join(str(val) for row in grid for val in row)
 
     row_vals = [i+1 for i in range(N)]
     col_vals = [i+1 for i in range(N)]
@@ -40,15 +49,7 @@ def generate(N):
         for r in grid:
             file.write(f"{','.join(map(lambda x: '1' if x else '-1',r))}\n")
 
-    with open('human_aux.txt', 'w') as file:
-        file.write(f"{N}\n")
-        file.write(f"{','.join(map(str,row_vals))}\n")
-        file.write(f"{','.join(map(str,col_vals))}\n")
-        file.write(f"{','.join(map(str,row_ans))}\n")
-        file.write(f"{','.join(map(str,col_ans))}\n")
-
-        for _ in range(N):
-            file.write(f"{','.join(map(str,(0 for _ in range(N))))}\n")
+    return binary_repr
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generates a random Box puzzle")
