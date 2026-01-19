@@ -1,12 +1,13 @@
 import random
 import argparse
+from utils import grid_to_binary
 
 def generate(N, exclusion=None):
     grid = [
         [random.choice((1, 0)) for _ in range(N)]
         for _ in range(N)
     ]
-    binary_repr = "".join(str(val) for row in grid for val in row)
+    binary_repr = grid_to_binary(grid)
 
     if exclusion is not None:
         while binary_repr in exclusion:
@@ -14,7 +15,7 @@ def generate(N, exclusion=None):
                 [random.choice((1, 0)) for _ in range(N)]
                 for _ in range(N)
             ]
-            binary_repr = "".join(str(val) for row in grid for val in row)
+            binary_repr = grid_to_binary(grid)
 
     row_vals = [i+1 for i in range(N)]
     col_vals = [i+1 for i in range(N)]
