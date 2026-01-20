@@ -26,7 +26,10 @@ def solver_helper(msgs):
         row_ans = list(map(int, file.readline().split(',')))
         col_ans = list(map(int, file.readline().split(',')))
 
-        current_grid = [[0 for _ in range(N)] for _ in range(N)]
+    with open('human_input.txt', 'r') as file:
+        current_grid = []
+        for r in range(N):
+            current_grid.append(list(map(int, file.readline().split(',')))) 
 
     while True:
         row_decided_sum = []

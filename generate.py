@@ -49,6 +49,10 @@ def generate(N, exclusion=None):
 
         for r in grid:
             file.write(f"{','.join(map(lambda x: '1' if x else '-1',r))}\n")
+    
+    with open('human_input.txt', 'w') as file:
+        for _ in range(N):
+            file.write(",".join('0' for _ in range(N)) + "\n")
 
     return binary_repr
 
