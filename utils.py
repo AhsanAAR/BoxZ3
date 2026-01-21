@@ -4,3 +4,6 @@ def save_input(id):
 
 def grid_to_binary(grid):
     return "".join(str(val) for row in grid for val in row)
+
+def cube_to_binary(cube):
+    return "".join(str(val) for face in cube for row in face for val in row)
