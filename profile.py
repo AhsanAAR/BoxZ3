@@ -10,7 +10,6 @@ if __name__ == "__main__":
     N = args.N
     K = 10
 
-    exclusion = set()
     total_unique_time = 0
     total_human_time = 0
     total_algo_1_time = 0

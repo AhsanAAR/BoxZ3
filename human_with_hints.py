@@ -2,7 +2,7 @@ from solver_human import solver as human
 import random
 import argparse
 
-def human_with_hints(allowed_hints=0, msgs=False):
+def hints_solver(allowed_hints=0, msgs=False):
     with open('input.txt', 'r') as ansfile:
         N = int(ansfile.readline())
         ansfile.readline()
@@ -58,4 +58,5 @@ if __name__ == "__main__":
     parser.add_argument("h", type=int, help="Number of hints allowed")
     args = parser.parse_args()
         
-    print(human_with_hints(args.h, True))
+    print(hints_solver(args.h, True))
+    

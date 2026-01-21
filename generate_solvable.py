@@ -4,7 +4,7 @@ from solver_human import solver as human_solver
 import argparse
 import time
 
-def generate_solvable2(N, exclusion=None):
+def generate_solvable2(N):
     repr = None
     start = time.perf_counter()
     exclusion = set()
@@ -21,7 +21,7 @@ def generate_solvable2(N, exclusion=None):
 
     return repr, total_time
 
-def generate_solvable1(N, exclusion=None):
+def generate_solvable1(N):
     unique_generation_time = 0
     human_solver_time = 0
     repr = None
