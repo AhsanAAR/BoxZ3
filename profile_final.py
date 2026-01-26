@@ -9,7 +9,7 @@ if __name__ == "__main__":
 
     K = 10
 
-    for n in range(12, 30):
+    for n in range(14, 30):
         total_time_unique = 0
         total_hints_unique = 0
         total_time_random = 0

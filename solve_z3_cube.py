@@ -20,7 +20,7 @@ def all_smt(s, initial_terms):
     yield from all_smt_rec(list(initial_terms))
 
 def solve_z3(write_ans=False, list_all=False):
-    with open('input.txt', 'r') as file:
+    with open('input_cube.txt', 'r') as file:
         N = int(file.readline())
 
         top_vals = list(map(int, file.readline().split(',')))
@@ -54,11 +54,11 @@ def solve_z3(write_ans=False, list_all=False):
     ]
 
     left_row_vars = [
-        [z.Int(f"tr_{r}_{c}") for c in range(N)]
+        [z.Int(f"lr_{r}_{c}") for c in range(N)]
         for r in range(N)
     ]
     left_col_vars = [
-        [z.Int(f"tc_{r}_{c}") for c in range(N)]
+        [z.Int(f"lc_{r}_{c}") for c in range(N)]
         for r in range(N)
     ]
 
@@ -83,42 +83,59 @@ def solve_z3(write_ans=False, list_all=False):
             solver.add(z.Implies(z.Not(left_face[r][c]), z.And(left_row_vars[r][c] == 0, left_col_vars[r][c] == 0)))
             solver.add(z.Implies(z.Not(right_face[r][c]), z.And(right_row_vars[r][c] == 0, right_col_vars[r][c] == 0)))
           
-    for r in range(N):
-        solver.add(sum(row_vars[r]) == row_ans[r])
+    
 
-    for c in range(N):
-        col_list = []
-        for r in range(N):
-            col_list.append(col_vars[r][c])
-        
-        solver.add(sum(col_list) == col_ans[c])
+    for i in range(N):
+        solver.add(top_ans[i] == (sum(top_row_vars[i]) + sum(right_col_vars[r][N-1-i] for r in range(N))))
+
+        solver.add(left_ans[i] == (sum(left_row_vars[i]) + sum(right_row_vars[i])))
+
+        solver.add(bottom_ans[i] == (sum(left_col_vars[r][i] for r in range(N)) + sum(top_col_vars[r][i] for r in range(N))))
+
 
     i = 0
     if solver.check() == z.sat:
         if write_ans:
-            open("z3_out.txt", "w").close()
+            open("z3_out_cube.txt", "w").close()
 
+        VARS = [top_face[r][c] for c in range(N) for r in range(N)] + [left_face[r][c] for c in range(N) for r in range(N)] + [right_face[r][c] for c in range(N) for r in range(N)]
         
-        for model in all_smt(solver, [grid[r][c] for c in range(N) for r in range(N)]):
+        for model in all_smt(solver, VARS):
             i+=1
 
+            if i > 1 and not list_all:
+                return i
+
             if write_ans:
-                answer = [
-                    [model[grid[r][c]] for c in range(N)]
+                top_solution = [
+                    [model[top_face[r][c]] for c in range(N)]
                     for r in range(N)
                 ]
 
-                with open('z3_out.txt', 'a') as file:
-                    for r in answer:
+                left_solution = [
+                    [model[left_face[r][c]] for c in range(N)]
+                    for r in range(N)
+                ]
+
+                right_solution = [
+                    [model[right_face[r][c]] for c in range(N)]
+                    for r in range(N)
+                ]
+
+                with open('z3_out_cube.txt', 'a') as file:
+                    for r in top_solution:
                         file.write(f'{",".join(map(lambda x: "1" if x else "0", r))}\n')
-            
-            if i == 2 and not list_all:
-                return 2
-            
+
+                    for r in left_solution:
+                        file.write(f'{",".join(map(lambda x: "1" if x else "0", r))}\n')
+
+                    for r in right_solution:
+                        file.write(f'{",".join(map(lambda x: "1" if x else "0", r))}\n')
+
     else:
         print("Not possible")
     
     return i
 
 if __name__ == "__main__":
-    solve_z3(True, True)
+    print(solve_z3(True, True))
