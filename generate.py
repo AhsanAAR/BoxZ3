@@ -1,8 +1,8 @@
 import random
 import argparse
-from utils import grid_to_binary
+from utils import grid_to_binary, first_n_primes
 
-def generate(N, exclusion=None):
+def generate(N, exclusion=None, primes=False):
     grid = [
         [random.choice((1, 0)) for _ in range(N)]
         for _ in range(N)
@@ -19,6 +19,10 @@ def generate(N, exclusion=None):
 
     row_vals = [i+1 for i in range(N)]
     col_vals = [i+1 for i in range(N)]
+
+    if primes:
+        row_vals = first_n_primes(N)
+        col_vals = first_n_primes(N)
 
     row_ans = []
     for r in range(N):

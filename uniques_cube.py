@@ -1,6 +1,6 @@
-from generate import generate
-from solve_z3 import solve_z3
-from solver_human import solver
+from generate_cube import generate
+from solve_z3_cube import solve_z3
+from solver_human_cube import solver
 from utils import save_input
 
 import argparse
@@ -17,13 +17,13 @@ if __name__ == "__main__":
     # solutions = set()
     # N = args.N
     
-    for N in range(10,11):
+    for N in range(2,11):
         counter = defaultdict(int)
         counter2 = defaultdict(int)
         solutions = set()
 
         for i in range(1000):
-            new_sol = generate(N, solutions, primes=True)
+            new_sol = generate(N, solutions)
             if i % 100 == 0:
                 print(i)
 
@@ -36,7 +36,7 @@ if __name__ == "__main__":
             counter2[human_solver_result] += 1
 
             if z3_solutions == 1 and human_solver_result != 1:
-                save_input(N)
+                save_input(f"cube_{N}", "input_cube.txt")
                 
         print(N, counter)
         print(N, counter2)

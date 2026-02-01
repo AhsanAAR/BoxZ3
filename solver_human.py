@@ -1,20 +1,5 @@
 import z3 as z
-
-def can_sum(arr: list[int], remove:int, target: int):
-    if remove in arr:
-        arr.remove(remove)
-    else:
-        return True
-    
-    s = z.Solver()
-    vars = [z.Int(f"check_{i}") for i in range(len(arr))]
-    for i in range(len(arr)):
-        s.add(z.Or(vars[i] == 0, vars[i] == arr[i]))
-    
-    s.add(sum(vars) == target)
-    arr.append(remove)
-
-    return s.check() == z.sat
+from utils import can_sum
 
 def solver_helper(msgs):
     with open('input.txt', 'r') as file:

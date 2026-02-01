@@ -1,6 +1,6 @@
 import random
 import argparse
-from utils import cube_to_binary
+from utils import cube_to_binary, first_n_primes
 
 def generate(N, exclusion=None):
     cube = [
@@ -19,7 +19,8 @@ def generate(N, exclusion=None):
                     [
                     [random.choice((1, 0)) for _ in range(N)]
                     for _ in range(N)
-                    for _ in range(3)]
+                    ]
+                    for _ in range(3)
                 ]
             binary_repr = cube_to_binary(cube)
 
@@ -27,14 +28,18 @@ def generate(N, exclusion=None):
     left_face = cube[1]
     right_face = cube[2]
 
-    top_vals = [i+1 for i in range(N)]
-    right_vals = [i+1 for i in range(N)]
-    bottom_vals = [i+1 for i in range(N)]
+    # top_vals = [i+1 for i in range(N)]
+    # right_vals = [i+1 for i in range(N)]
+    # bottom_vals = [i+1 for i in range(N)]
+
+    top_vals = first_n_primes(N)
+    right_vals = first_n_primes(N)
+    bottom_vals = first_n_primes(N)
 
     bottom_ans = [0 for _ in range(N)]
 
-    for c in range(N):
-        for r in range(N):
+    for r in range(N):
+        for c in range(N):
             bottom_ans[c] += top_face[r][c] * bottom_vals[N-1-r]
             bottom_ans[c] += left_face[r][c] * right_vals[r]
 
@@ -49,7 +54,7 @@ def generate(N, exclusion=None):
 
     for r in range(N):
         for c in range(N):
-            top_ans[r] += top_face[r][c] * bottom_vals[N-1-r]
+            top_ans[r] += top_face[r][c] * top_vals[c]
     
     for r in range(N):
         for c in range(N):
@@ -69,6 +74,11 @@ def generate(N, exclusion=None):
             for r in face:
               file.write(f"{','.join(map(lambda x: '1' if x else '-1',r))}\n")
     
+    with open('human_input_cube.txt', 'w') as file:
+        for face in cube:
+            for _ in range(N):
+                file.write(",".join('0' for _ in range(N)) + "\n")
+
     return binary_repr
 
 if __name__ == "__main__":
