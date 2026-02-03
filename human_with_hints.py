@@ -1,8 +1,11 @@
 from solver_human import solver as human
 import random
 import argparse
+from utils import reset_human_input
 
 def hints_solver(allowed_hints=0, msgs=False):
+    reset_human_input()
+    
     with open('input.txt', 'r') as ansfile:
         N = int(ansfile.readline())
         ansfile.readline()

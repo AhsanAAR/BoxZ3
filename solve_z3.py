@@ -89,4 +89,4 @@ def solve_z3(write_ans=False, list_all=False):
     return i
 
 if __name__ == "__main__":
-    solve_z3(True, True)
+    print(solve_z3(False, True))

@@ -1,7 +1,7 @@
 from generate_cube import generate
 from solve_z3_cube import solve_z3
 from solver_human_cube import solver
-from utils import save_input
+from utils import save_file
 
 import argparse
 from collections import defaultdict
@@ -36,7 +36,7 @@ if __name__ == "__main__":
             counter2[human_solver_result] += 1
 
             if z3_solutions == 1 and human_solver_result != 1:
-                save_input(f"cube_{N}", "input_cube.txt")
+                save_file(f"cube_{N}", "input_cube.txt")
                 
         print(N, counter)
         print(N, counter2)

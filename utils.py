@@ -35,8 +35,16 @@ def can_sum(arr: list[int], remove:int, target: int):
 
     return s.check() == z.sat
 
-def save_input(id, to="input.txt"):
-    with open(to, "r") as src, open(f"saved_{id}.txt", "a") as dest:
+def reset_human_input():
+    with open('input.txt', 'r') as file:
+        N = int(file.readline())
+    
+    with open('human_input.txt', 'w') as file:
+        for _ in range(N):
+            file.write(",".join('0' for _ in range(N)) + "\n")
+
+def save_file(id, to="input.txt", mode='a'):
+    with open(to, "r") as src, open(f"saved_{id}.txt", mode) as dest:
         dest.write(src.read())
 
 def grid_to_binary(grid):
