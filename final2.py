@@ -31,6 +31,9 @@ def final(N, allowed_time=5*60, msgs=False, target_hints=0):
 
             human_ans, current_hints = hints_solver(allowed_hints)
             
+            with open('experiment.txt', 'a') as file:
+                file.write(f"{repr} {i} {human_ans} {current_hints}\n")
+
             if msgs:
                 print(human_ans, current_hints)
 
@@ -56,5 +59,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    print(final(args.N, msgs=True))
+    final(14, allowed_time=math.inf, msgs=True)
+
+    # print(final(args.N, msgs=True))
 

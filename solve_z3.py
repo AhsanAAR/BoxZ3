@@ -79,6 +79,7 @@ def solve_z3(write_ans=False, list_all=False):
                 with open('z3_out.txt', 'a') as file:
                     for r in answer:
                         file.write(f'{",".join(map(lambda x: "1" if x else "0", r))}\n')
+                    file.write("\n")
             
             if i == 2 and not list_all:
                 return 2

@@ -1,6 +1,7 @@
 import z3 as z
 from z3 import *
 from collections import defaultdict
+import matplotlib.pyplot as plt
 
 def all_smt(s, initial_terms):
     def block_term(s, m, t):
@@ -43,19 +44,19 @@ def all_models(solver, vars):
 
     return models
 
-s = z.Solver()
-val = [2,4]
-vars = [z.Int(f"x_{i}") for i in range(len(val))]
+# s = z.Solver()
+# val = [2,4]
+# vars = [z.Int(f"x_{i}") for i in range(len(val))]
 
-for i in range(len(val)):
-    s.add(z.Or(vars[i] == 0, vars[i] == val[i]))
+# for i in range(len(val)):
+#     s.add(z.Or(vars[i] == 0, vars[i] == val[i]))
 
-y = 5
-s.add(sum(vars) == y)
-if s.check() == z.sat:
-    print("ok")
-else:
-    print("not ok")
+# y = 5
+# s.add(sum(vars) == y)
+# if s.check() == z.sat:
+#     print("ok")
+# else:
+#     print("not ok")
 
 # while s.check() == z.sat:
 #     print(all_smt(s, arr))
@@ -65,3 +66,21 @@ else:
     # h = [z.Not(v == m[v]) for v in arr]
     # print(h)
     # s.add(z.Or(*h))
+
+with open("experiment.txt", "r") as file:
+    answers = []
+    values = []
+
+    for line in file:
+        s = line.split()
+        answers.append(s[-2])
+        values.append(s[-1])
+
+    plt.plot(values)
+    plt.gca().invert_yaxis()
+
+    plt.xlabel('Iterations')
+    plt.ylabel('Hints')
+    plt.grid(True)
+
+    plt.savefig('plot.png') 

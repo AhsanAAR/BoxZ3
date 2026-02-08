@@ -1,5 +1,5 @@
 import z3 as z
-from utils import can_sum
+from utils import can_sum, reset_human_input
 
 def solver_helper(msgs):
     with open('input.txt', 'r') as file:
@@ -167,4 +167,5 @@ def solver(msgs=False, write_ans=False):
     return ans
 
 if __name__ == "__main__":
+    reset_human_input()
     solver(True, True)
