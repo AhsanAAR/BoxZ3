@@ -79,24 +79,24 @@ def solver_helper(msgs):
                 solver.add(z.And(grid[r][c] >= -1, grid[r][c] <= 1))
                 solver.add(z.Implies(current_grid[r][c] != 0, current_grid[r][c] == grid[r][c]))
 
-                # 2) Mark cell unshaded whose row/column value is more than the remaning required sum
-                solver.add(z.Implies(z.And(current_grid[r][c] == 0,row_ans[r] - row_decided_sum[r] < col_vals[c]), grid[r][c] == -1))
-                solver.add(z.Implies(z.And(current_grid[r][c] == 0,col_ans[c] - col_decided_sum[c] < row_vals[r]), grid[r][c] == -1))
+                # # 2) Mark cell unshaded whose row/column value is more than the remaning required sum
+                # solver.add(z.Implies(z.And(current_grid[r][c] == 0,row_ans[r] - row_decided_sum[r] < col_vals[c]), grid[r][c] == -1))
+                # solver.add(z.Implies(z.And(current_grid[r][c] == 0,col_ans[c] - col_decided_sum[c] < row_vals[r]), grid[r][c] == -1))
 
                 # 3) If the sum of the undecided cells apart from this cell is smaller than the required target, shade it.
                 solver.add(z.Implies(z.And(current_grid[r][c] == 0, row_undecided_sum[r] - col_vals[c] < row_ans[r] - row_decided_sum[r]), grid[r][c] == 1))
                 solver.add(z.Implies(z.And(current_grid[r][c] == 0, col_undecided_sum[c] - row_vals[r] < col_ans[c] - col_decided_sum[c]), grid[r][c] == 1))
 
                 # 4) If target - cell < smallest undecided cell, then make this cell unshaded.
-                solver.add(z.Implies(z.And(current_grid[r][c] == 0, row_ans[r] - row_decided_sum[r]-col_vals[c] < row_smallest_undecided[r], row_ans[r] - row_decided_sum[r]-col_vals[c] > 0), grid[r][c] == -1))
-                solver.add(z.Implies(z.And(current_grid[r][c] == 0, col_ans[c] - col_decided_sum[c]-row_vals[r] < col_smallest_undecided[c], col_ans[c] - col_decided_sum[c]-row_vals[r] > 0), grid[r][c] == -1))
+                solver.add(z.Implies(z.And(current_grid[r][c] == 0, row_ans[r] - row_decided_sum[r]-col_vals[c] < row_smallest_undecided[r], (row_ans[r] - row_decided_sum[r]-col_vals[c]) != 0), grid[r][c] == -1))
+                solver.add(z.Implies(z.And(current_grid[r][c] == 0, col_ans[c] - col_decided_sum[c]-row_vals[r] < col_smallest_undecided[c], (col_ans[c] - col_decided_sum[c]-row_vals[r]) != 0), grid[r][c] == -1))
                 
                 # 5) If the undecided cells apart from this one cannot create a sum equal to target, shade this cell. This covers some other rules, but is costly.
-                r_cs = can_sum(row_undecided[r], col_vals[c], row_ans[r]-row_decided_sum[r])
-                solver.add(z.Implies(z.And(current_grid[r][c] == 0, z.Not(r_cs)), grid[r][c] == 1))
+                # r_cs = can_sum(row_undecided[r], col_vals[c], row_ans[r]-row_decided_sum[r])
+                # solver.add(z.Implies(z.And(current_grid[r][c] == 0, z.Not(r_cs)), grid[r][c] == 1))
 
-                c_cs = can_sum(col_undecided[c], row_vals[r], col_ans[c]-col_decided_sum[c])
-                solver.add(z.Implies(z.And(current_grid[r][c] == 0, z.Not(c_cs)), grid[r][c] == 1))
+                # c_cs = can_sum(col_undecided[c], row_vals[r], col_ans[c]-col_decided_sum[c])
+                # solver.add(z.Implies(z.And(current_grid[r][c] == 0, z.Not(c_cs)), grid[r][c] == 1))
 
         if solver.check() == z.sat:
             if msgs:

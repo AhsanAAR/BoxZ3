@@ -2,7 +2,7 @@ import random
 import argparse
 from utils import cube_to_binary, first_n_primes
 
-def generate(N, exclusion=None):
+def generate(N, exclusion=None, primes=False):
     cube = [
         [
         [random.choice((1, 0)) for _ in range(N)]
@@ -28,13 +28,15 @@ def generate(N, exclusion=None):
     left_face = cube[1]
     right_face = cube[2]
 
-    # top_vals = [i+1 for i in range(N)]
-    # right_vals = [i+1 for i in range(N)]
-    # bottom_vals = [i+1 for i in range(N)]
 
-    top_vals = first_n_primes(N)
-    right_vals = first_n_primes(N)
-    bottom_vals = first_n_primes(N)
+    top_vals = [i+1 for i in range(N)]
+    right_vals = [i+1 for i in range(N)]
+    bottom_vals = [i+1 for i in range(N)]
+
+    if primes:
+        top_vals = first_n_primes(N)
+        right_vals = first_n_primes(N)
+        bottom_vals = first_n_primes(N)
 
     bottom_ans = [0 for _ in range(N)]
 

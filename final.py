@@ -4,10 +4,11 @@ from human_with_hints import hints_solver as human_solver
 import argparse
 import time
 
-def final(N, check_unique, max_iterations=10, hints_start=0, msgs=False):
+def final(N, check_unique, max_iterations=5, hints_start=0, msgs=False):
     allowed_hints = hints_start
     exclusion = set()
     repr = None
+    candidates = 0
 
     start = time.perf_counter()
 
@@ -16,6 +17,7 @@ def final(N, check_unique, max_iterations=10, hints_start=0, msgs=False):
 
         for i in range(max_iterations):
             repr = generate(N, exclusion)
+            candidates += 1
             exclusion.add(repr)
             
             if check_unique:
@@ -25,6 +27,7 @@ def final(N, check_unique, max_iterations=10, hints_start=0, msgs=False):
                         break
                     
                     repr = generate(N, exclusion)
+                    candidates += 1
                     exclusion.add(repr)
 
             human_ans, used_hints = human_solver(allowed_hints)
@@ -46,7 +49,7 @@ def final(N, check_unique, max_iterations=10, hints_start=0, msgs=False):
     end = time.perf_counter()
     total_time = end-start
 
-    return repr, used_hints, total_time
+    return repr, used_hints, total_time, candidates
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generates a random Box puzzle")

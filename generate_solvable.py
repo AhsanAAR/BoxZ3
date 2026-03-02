@@ -8,9 +8,11 @@ def generate_solvable2(N):
     repr = None
     start = time.perf_counter()
     exclusion = set()
+    candidates = 0
     
     while True:
         repr = generate(N, exclusion)
+        candidates += 1
         exclusion.add(repr)
 
         if human_solver() == 1:
@@ -19,7 +21,7 @@ def generate_solvable2(N):
     end = time.perf_counter()
     total_time = end-start
 
-    return repr, total_time
+    return repr, total_time, candidates
 
 def generate_solvable1(N):
     unique_generation_time = 0
@@ -27,18 +29,24 @@ def generate_solvable1(N):
     repr = None
     total_start = time.perf_counter()
     exclusion = set()
+    total_candidates = 0
+    unique_candidates = 0
+
 
     while True:
         start = time.perf_counter()
         
         while True:    
             repr = generate(N, exclusion)
+            total_candidates += 1
             exclusion.add(repr)
             no_of_sols = solve_z3()
 
             if no_of_sols == 1:
                 break
         
+        unique_candidates += 1
+
         end = time.perf_counter()
         unique_generation_time += end - start 
 
@@ -53,7 +61,7 @@ def generate_solvable1(N):
     total_end = time.perf_counter()
     total_time = total_end - total_start
 
-    return repr, unique_generation_time, human_solver_time, total_time
+    return repr, unique_generation_time, human_solver_time, total_time, unique_candidates, total_candidates
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generates a random Box puzzle")

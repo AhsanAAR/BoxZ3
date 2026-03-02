@@ -7,7 +7,7 @@ import argparse
 from collections import defaultdict
 
 
-if __name__ == "__main__":
+def test_cube(primes):
     # parser = argparse.ArgumentParser(description="Generates a random Box puzzle")
     # parser.add_argument("N", type=int, help="Size for NxN Box grid")
     # args = parser.parse_args()
@@ -17,13 +17,13 @@ if __name__ == "__main__":
     # solutions = set()
     # N = args.N
     
-    for N in range(2,11):
+    for N in range(2,6):
         counter = defaultdict(int)
         counter2 = defaultdict(int)
         solutions = set()
 
         for i in range(1000):
-            new_sol = generate(N, solutions)
+            new_sol = generate(N, solutions, primes)
             if i % 100 == 0:
                 print(i)
 
@@ -40,3 +40,6 @@ if __name__ == "__main__":
                 
         print(N, counter)
         print(N, counter2)
+
+if __name__ == "__main__":
+    test_cube()

@@ -10,34 +10,59 @@ if __name__ == "__main__":
 
     K = 10
 
-    d = {
-        10: 5,
-        11: 19,
-        12: 27,
-        13: 35,
-        14: 49
-    }
-
-    for n in range(10,15):
-        # total_time_unique = 0
-        # total_hints_unique = 0
-        total_time_random = 0
-        total_hints_random = 0
-
-        # hints_start = int(n*n*0.2)
+    for n in range(4,16):
+        total_time = 0
+        total_hints = 0
+        total_iterations = 0
 
         for k in range(K):
             print(k)
 
-            _, hints, time = final(n, allowed_time=math.inf, target_hints=d[n])
-            
-            # _, unique_hints, unique_time = final(n, True, hints_start=hints_start)
-            # _, random_hints, random_time = final(n, False, hints_start=hints_start)
+            repr, hints, time, iterations = final(n)
+            print(repr, hints, time, iterations)
 
-            # total_time_unique += unique_time
-            # total_hints_unique += unique_hints
 
-            total_time_random += time
-            total_hints_random += hints
+            total_time += time
+            total_hints += hints
+            total_iterations += iterations
+
+        print(n, K, total_time/K, total_hints/K, total_iterations/K)
+
+    # for n in range(4,16):
+    #     total_time = 0
+    #     total_hints = 0
+    #     total_candidates = 0
+
+    #     hints_start = max(0,int(((10.9*n - 100.9)*0.7)))
+
+    #     for k in range(K):
+    #         print(k)
+
+    #         repr, hints, time, candidates = final(n, False, hints_start=hints_start)
+    #         print(repr, hints, time, candidates)
+
+    #         total_time += time
+    #         total_hints += hints
+    #         total_candidates += candidates
         
-        print(n, total_time_random/K, total_hints_random/K)
+    #     print(n, K, hints_start, total_time/K, total_hints/K, total_candidates/K)
+    
+
+    # for n in range(4,11):
+    #     total_time = 0
+    #     total_hints = 0
+    #     total_candidates = 0
+
+    #     for k in range(K):
+    #         print(k)
+
+    #         repr, hints, time, candidates = final(n, True)
+    #         print(repr, hints, time, candidates)
+
+    #         total_time += time
+    #         total_hints += hints
+    #         total_candidates += candidates
+        
+    #     print(n, K, total_time/K, total_hints/K, total_candidates/K)
+    
+    

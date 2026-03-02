@@ -44,6 +44,38 @@ def all_models(solver, vars):
 
     return models
 
+import matplotlib.pyplot as plt
+
+# Data
+# N = [4, 5, 6, 7, 8, 9, 10]
+# uniquely_solvable = [984, 982, 956, 963, 893, 874, 815]
+# human_solvable = [984, 975, 922, 799, 379, 108, 13]
+
+# # Create the plot
+# plt.figure(figsize=(10, 6))
+# plt.plot(N, uniquely_solvable, marker='o', linewidth=2, markersize=8, 
+#          label='Uniquely Solvable', color='#3b82f6')
+# plt.plot(N, human_solvable, marker='o', linewidth=2, markersize=8, 
+#          label='Human-Solvable', color='#ef4444')
+
+# # Customize the plot
+# plt.xlabel('N', fontsize=14, fontweight='bold')
+# plt.ylabel('Count', fontsize=14, fontweight='bold')
+# plt.title('Solvability vs N', fontsize=16, fontweight='bold')
+# plt.legend(fontsize=12)
+# plt.grid(True, alpha=0.3)
+# plt.xticks(N)
+# plt.ylim(0, 1000)
+
+# # Add some styling
+# plt.tight_layout()
+
+# # Save the plot
+# plt.savefig('solvability_plot.png', dpi=300, bbox_inches='tight')
+
+# # Display the plot
+# plt.show()
+
 # s = z.Solver()
 # val = [2,4]
 # vars = [z.Int(f"x_{i}") for i in range(len(val))]
@@ -67,20 +99,25 @@ def all_models(solver, vars):
     # print(h)
     # s.add(z.Or(*h))
 
-with open("experiment.txt", "r") as file:
+import matplotlib.pyplot as plt
+import numpy as np
+
+with open("experiment2.txt", "r") as file:
     answers = []
     values = []
 
     for line in file:
         s = line.split()
         answers.append(s[-2])
-        values.append(s[-1])
+        values.append(int(s[-1]))  # convert to int!
 
     plt.plot(values)
-    plt.gca().invert_yaxis()
+    # plt.gca().invert_yaxis()
+
+    # Fix: set evenly spaced ticks
+    plt.yticks(range(min(values), max(values) + 1, 5))  # every 5 units, adjust as needed
 
     plt.xlabel('Iterations')
     plt.ylabel('Hints')
     plt.grid(True)
-
-    plt.savefig('plot.png') 
+    plt.savefig('plot.png')

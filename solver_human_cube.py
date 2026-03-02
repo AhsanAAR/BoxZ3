@@ -17,17 +17,17 @@ def solver_helper(msgs):
         for r in range(len(current_ans)):
             for c in range(len(current_ans[r])):
                 # 2) Mark cell unshaded whose row/column value is more than the remaning required sum
-                solver.add(z.Implies(z.And(current_ans[r][c] == 0,ans[r] - decided_sum[r] < vals[c]), z3_ans[r][c] == -1))
+                # solver.add(z.Implies(z.And(current_ans[r][c] == 0,ans[r] - decided_sum[r] < vals[c]), z3_ans[r][c] == -1))
 
                 # 3) If the sum of the undecided cells apart from this cell is smaller than the required target, shade it.
                 solver.add(z.Implies(z.And(current_ans[r][c] == 0, undecided_sum[r] - vals[c] < ans[r] - decided_sum[r]), z3_ans[r][c] == 1))
 
                 # 4) If target - cell < smallest undecided cell, then make this cell unshaded.
-                solver.add(z.Implies(z.And(current_ans[r][c] == 0, ans[r] - decided_sum[r]-vals[c] < smallest_undecided[r], ans[r] - decided_sum[r]-vals[c] > 0), z3_ans[r][c] == -1))
+                solver.add(z.Implies(z.And(current_ans[r][c] == 0, ans[r] - decided_sum[r]-vals[c] < smallest_undecided[r], ans[r] - decided_sum[r]-vals[c] != 0), z3_ans[r][c] == -1))
                 
                 # 5) If the undecided cells apart from this one cannot create a sum equal to target, shade this cell. This covers some other rules, but is costly.
-                r_cs = can_sum(undecided[r], vals[c], ans[r]-decided_sum[r])
-                solver.add(z.Implies(z.And(current_ans[r][c] == 0, z.Not(r_cs)), z3_ans[r][c] == 1))
+                # r_cs = can_sum(undecided[r], vals[c], ans[r]-decided_sum[r])
+                # solver.add(z.Implies(z.And(current_ans[r][c] == 0, z.Not(r_cs)), z3_ans[r][c] == 1))
 
     with open('input_cube.txt', 'r') as file:
         N = int(file.readline())
